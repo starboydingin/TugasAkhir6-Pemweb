@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="id" class="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Weather Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class"
+    }
+  </script>
+
+  <style>
+    .fade-in { animation: fadeIn .35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: translateY(0);} }
+    .spinner { border-top-color: transparent; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors">
+
+  <div class="max-w-5xl mx-auto p-4 sm:p-6">
+    <header class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-semibold">Weather Dashboard</h1>
+        <div id="last-updated" class="text-sm text-slate-500 hidden"></div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <input id="search-input" type="search" placeholder="Cari kota (mis. Jakarta)" autocomplete="off"
+                 class="w-64 sm:w-80 px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-sky-400 dark:bg-slate-800" />
+          <ul id="suggestions" class="absolute z-10 left-0 right-0 mt-1 bg-white dark:bg-slate-800 rounded-md shadow-lg overflow-hidden hidden"></ul>
+        </div>
+
+        <button id="refresh-btn" title="Refresh" class="px-3 py-2 rounded-lg border hover:shadow-sm">Refresh</button>
+
+        <div class="flex items-center gap-2 px-2 py-1 border rounded-lg">
+          <label class="text-sm">°C</label>
+          <input id="unit-toggle" type="checkbox" class="toggle-unit" />
+          <label class="text-sm">°F</label>
+        </div>
+
+        <button id="theme-toggle" title="Toggle theme" class="px-3 py-2 rounded-lg border">Theme</button>
+      </div>
+    </header>
+
+    <section class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-medium">Favorit</h2>
+        <small class="text-slate-500">Klik untuk cepat lihat</small>
+      </div>
+      <div id="favorites" class="flex flex-wrap gap-2"></div>
+    </section>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section id="current-card" class="col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md fade-in">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 id="location-name" class="text-2xl font-semibold">-</h3>
+            <p id="weather-desc" class="text-sm text-slate-500 dark:text-slate-300">-</p>
+            <p id="timestamp" class="text-xs text-slate-400 mt-1">-</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <div id="temp" class="text-5xl font-bold">--°</div>
+            <img id="weather-icon" alt="icon" class="w-20 h-20" src="" />
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-3 gap-4 text-sm">
+          <div class="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div class="text-xs text-slate-500">Humidity</div>
+            <div id="humidity" class="font-medium">-- %</div>
+          </div>
+          <div class="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div class="text-xs text-slate-500">Wind</div>
+            <div id="wind" class="font-medium">-- m/s</div>
+          </div>
+          <div class="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div class="text-xs text-slate-500">Pressure</div>
+            <div id="pressure" class="font-medium">-- hPa</div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center gap-3">
+          <button id="save-fav" class="px-4 py-2 bg-emerald-500 text-white rounded-lg shadow hover:opacity-95">Tambah Favorit</button>
+          <button id="remove-fav" class="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:opacity-95 hidden">Hapus Favorit</button>
+          <div id="loading" class="ml-2 hidden items-center gap-2 text-sm text-slate-500">
+            <div class="w-4 h-4 border-2 rounded-full spinner"></div>
+            <span>Loading...</span>
+          </div>
+        </div>
+
+        <p id="error-msg" class="mt-3 text-red-500 hidden"></p>
+      </section>
+
+      <aside class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md">
+        <h4 class="font-medium mb-3">5-Day Forecast</h4>
+        <div id="forecast" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </aside>
+    </main>
+
+    <footer class="text-xs text-slate-500 mt-6">
+      Ardhan's Sky: Forecast Weather Dashboard
+    </footer>
+  </div>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
